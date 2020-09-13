@@ -34,5 +34,93 @@
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script>
+
+
+// document ready function
+$(document).ready(function(){
+
+// variables
+var eventStorage = window.localStorage;
+let currentDayDisplay = $("#currentDay");
+
+// display current day
+function updateCurrentDay(){
+  //for the element $("#currentDay")
+  console.log(currentDayDisplay);
+  let currentDayString = moment().format("dddd, MMMM Do YYYY");
+  console.log(currentDayString);
+  currentDayDisplay.text(currentDayString);
+}
+
+updateCurrentDay();
+
+
+//timeblock generation
+function displayTimeblocks(){
+    for (var h = 9; h < 18; h++){
+        let newTimeBlock = document.createElement("div"); // create row in container
+        newTimeBlock.setAttribute("class", "row"); 
+        $(".container").append(newTimeBlock);
+        
+        let newHourTitle = document.createElement("aside"); //create hour display
+        newHourTitle.setAttribute("class", "hour col-1");
+        newHourTitle.textContent = `${h}:00`;
+        newTimeBlock.appendChild(newHourTitle);
+
+        let newEventDisplay = document.createElement("main"); //create event display
+        newEventDisplay.setAttribute("class", "description col-10");
+        newEventDisplay.setAttribute("id", `event${h}00`);
+        let eventEditArea = document.createElement("textarea");
+        newEventDisplay.appendChild(eventEditArea);
+        newTimeBlock.appendChild(newEventDisplay);
+
+        let newSaveButton = document.createElement("button");
+        newSaveButton.setAttribute("class", "saveBtn col-1");
+        newSaveButton.textContent = `SAVE`;
+        newTimeBlock.appendChild(newSaveButton);
+
+        colorByHour(h, newEventDisplay);
+    }
+}
+
+displayTimeblocks();
+// color time blocks according to past/present/future
+function colorByHour(hour, eventSlot){
+  let currentHour = moment().hour();
+  console.log(`Current hour is ${currentHour}`);
+  if (hour < currentHour){
+    eventSlot.setAttribute("class", "past description col-10");
+  } else if (hour == currentHour){
+    eventSlot.setAttribute("class", "present description col-10");
+  } else if (hour > currentHour){
+    eventSlot.setAttribute("class", "future description col-10");
+  }
+}
+
+// local storage retrieval
+let scheduledEvents = [];
+function getScheduledEvents(){
+  let savedEvents = [];
+  JSON.parse(eventStorage);
+}
+
+//local storage saving
+
+// event creation or editing
+let saveEventBtn = $(".saveBtn");
+saveEventBtn.click();
+
+
+/* FLOW:
+- retrieve existing entries from storage
+- create timeblocks and fill
+- get current time and compare hout
+    - if past, .past. if present, .present. if future, .future
+- allow user to edit text of new or existing events and save to storage
+*/
+
+}) // end of document.ready()
+    </script>
   </body>
 </html>
