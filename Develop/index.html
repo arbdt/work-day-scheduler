@@ -41,7 +41,7 @@
 $(document).ready(function(){
 
 // variables
-var eventStorage = window.localStorage;
+var scheduleStorage = window.localStorage;
 let currentDayDisplay = $("#currentDay");
 
 // display current day
@@ -60,27 +60,28 @@ updateCurrentDay();
 function displayTimeblocks(){
     for (var h = 9; h < 18; h++){
         let newTimeBlock = document.createElement("div"); // create row in container
-        newTimeBlock.setAttribute("class", "row"); 
+        newTimeBlock.setAttribute("class", "row");
+        newTimeBlock.setAttribute("id", `${h}00_block`); 
         $(".container").append(newTimeBlock);
         
         let newHourTitle = document.createElement("aside"); //create hour display
         newHourTitle.setAttribute("class", "hour col-1");
+        newHourTitle.setAttribute("id", `${h}00_time`);
         newHourTitle.textContent = `${h}:00`;
         newTimeBlock.appendChild(newHourTitle);
 
-        let newEventDisplay = document.createElement("main"); //create event display
-        newEventDisplay.setAttribute("class", "description col-10");
-        newEventDisplay.setAttribute("id", `event${h}00`);
-        let eventEditArea = document.createElement("textarea");
-        newEventDisplay.appendChild(eventEditArea);
-        newTimeBlock.appendChild(newEventDisplay);
+        let newEditableEventArea = document.createElement("textarea"); //create event display
+        newEditableEventArea.setAttribute("class", "description col-10");
+        newEditableEventArea.setAttribute("id", `${h}00_event`);
+        newTimeBlock.appendChild(newEditableEventArea);
 
         let newSaveButton = document.createElement("button");
         newSaveButton.setAttribute("class", "saveBtn col-1");
-        newSaveButton.textContent = `SAVE`;
+        newSaveButton.setAttribute("id", `${h}00_save`);
+        newSaveButton.innerHTML = "\<i class\=\"fas fa-save\"\>\<\/i\>";
         newTimeBlock.appendChild(newSaveButton);
 
-        colorByHour(h, newEventDisplay);
+        colorByHour(h, newEditableEventArea);
     }
 }
 
@@ -106,10 +107,28 @@ function getScheduledEvents(){
 }
 
 //local storage saving
+function saveSchedule(){
+  event.preventDefault;
+  var target=  $(event.target);
+  console.log(`saving event`);
+  //console.log(target);
+  let eventHour = target.siblings(".hour").text();
+  //console.log(target.siblings(".hour"));
+  console.log(eventHour);
+  let eventData = target.siblings("textarea").val();
+  //console.log(target.siblings("textarea"));
+  console.log(eventData);
+  var eventObject = {
+    hour: eventHour,
+    data: eventData,
+  }
+  console.log(eventObject);
+  scheduleStorage.setItem(eventHour, eventData);
+}
 
 // event creation or editing
 let saveEventBtn = $(".saveBtn");
-saveEventBtn.click();
+saveEventBtn.click(saveSchedule);
 
 
 /* FLOW:
