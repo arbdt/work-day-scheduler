@@ -89,6 +89,7 @@ function displayTimeblocks(){
 }
 
 displayTimeblocks();
+
 // color time blocks according to past/present/future
 function colorByHour(hour, eventSlot){
   let currentHour = moment().hour();
@@ -108,7 +109,7 @@ function getScheduledEvents(){
   for (var i = 0; i < scheduleContainer.children().length; i++){// for each hour row in container 
     var hourToExtract = scheduleContainer.children().get(i).children[0].textContent; // get hour identifier
     console.log(`extracting hour ${hourToExtract}`);
-    var entryToSet = scheduleContainer.children($(".description")).get(i).children[1]; // reference the textarea to fill
+    var entryToSet = scheduleContainer.children().get(i).children[1]; // reference the textarea to fill
     console.log(entryToSet);
     if (scheduleStorage.getItem(hourToExtract) != undefined){  // if $(".hour").text() == eventHour
       console.log(scheduleStorage.getItem(hourToExtract));
