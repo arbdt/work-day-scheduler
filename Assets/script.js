@@ -28,19 +28,19 @@ $(document).ready(function(){
             scheduleContainer.append(newTimeBlock);
             
             let newHourTitle = document.createElement("aside"); //create hour display
-            newHourTitle.setAttribute("class", "hour col-1");
+            newHourTitle.setAttribute("class", "hour col-sm-1 col-3");
             newHourTitle.setAttribute("id", `${h}00_time`);
             newHourTitle.textContent = `${h}:00`;
             newTimeBlock.appendChild(newHourTitle);
     
             let newEditableEventArea = document.createElement("textarea"); //create event display
-            newEditableEventArea.setAttribute("class", "description col-10");
+            newEditableEventArea.setAttribute("class", "description col-sm-10 col-7");
             newEditableEventArea.setAttribute("id", `${h}00_event`);
             newEditableEventArea.value = "Nothing Set";
             newTimeBlock.appendChild(newEditableEventArea);
     
             let newSaveButton = document.createElement("button");
-            newSaveButton.setAttribute("class", "saveBtn col-1");
+            newSaveButton.setAttribute("class", "saveBtn col-sm-1 col-2");
             newSaveButton.setAttribute("id", `${h}00_save`);
             newSaveButton.innerHTML = "\<i class\=\"fas fa-save\"\>\<\/i\>";
             newTimeBlock.appendChild(newSaveButton);
@@ -56,11 +56,11 @@ $(document).ready(function(){
       let currentHour = moment().hour();
       console.log(`Current hour is ${currentHour}`);
       if (hour < currentHour){
-        eventSlot.setAttribute("class", "past description col-10");
+        eventSlot.setAttribute("class", "past description col-sm-10 col-7");
       } else if (hour == currentHour){
-        eventSlot.setAttribute("class", "present description col-10");
+        eventSlot.setAttribute("class", "present description col-sm-10 col-7");
       } else if (hour > currentHour){
-        eventSlot.setAttribute("class", "future description col-10");
+        eventSlot.setAttribute("class", "future description col-sm-10 col-7");
       }
     }
     
