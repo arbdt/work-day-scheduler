@@ -3,6 +3,6 @@ This website is for a task that involved creating a workday planner. It was to u
 The page is designed to be responsive to screen size, and incorporates functionality to save and retrieve scheduled events from local storage.
 
 # Preview Image
-[image](./Assets/previewImage.png)
+![image](./Assets/previewImage.png)
 # Link
 [Click this link](http://arbdt.github.io/work-day-scheduler) to access the deployed version of this web site.
