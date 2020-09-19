@@ -8,16 +8,13 @@ $(document).ready(function(){
     
     // display current day
     function updateCurrentDay(){
-      //for the element $("#currentDay")
-      console.log(currentDayDisplay);
+      // use Moment to generate the current day at time of page loading
       let currentDayString = moment().format("dddd, MMMM Do YYYY");
-      console.log(currentDayString);
+      // set current day page text to current day data from Moment
       currentDayDisplay.text(currentDayString);
     }
     
-    updateCurrentDay();
-    
-    
+    updateCurrentDay(); // run function to determine and display the current day
     
     //timeblock generation
     function displayTimeblocks(){
@@ -27,82 +24,69 @@ $(document).ready(function(){
             newTimeBlock.setAttribute("id", `${h}00_block`); 
             scheduleContainer.append(newTimeBlock);
             
-            let newHourTitle = document.createElement("aside"); //create hour display
+            let newHourTitle = document.createElement("aside"); // create hour display
             newHourTitle.setAttribute("class", "hour col-sm-1 col-3");
             newHourTitle.setAttribute("id", `${h}00_time`);
             newHourTitle.textContent = `${h}:00`;
             newTimeBlock.appendChild(newHourTitle);
     
-            let newEditableEventArea = document.createElement("textarea"); //create event display
+            let newEditableEventArea = document.createElement("textarea"); // create event display
             newEditableEventArea.setAttribute("class", "description col-sm-10 col-7");
             newEditableEventArea.setAttribute("id", `${h}00_event`);
             newEditableEventArea.value = "Nothing Set";
             newTimeBlock.appendChild(newEditableEventArea);
     
-            let newSaveButton = document.createElement("button");
+            let newSaveButton = document.createElement("button"); // create save button
             newSaveButton.setAttribute("class", "saveBtn col-sm-1 col-2");
             newSaveButton.setAttribute("id", `${h}00_save`);
-            newSaveButton.innerHTML = "\<i class\=\"fas fa-save\"\>\<\/i\>";
+            newSaveButton.innerHTML = "\<i class\=\"fas fa-save\"\>\<\/i\>"; // save icon
             newTimeBlock.appendChild(newSaveButton);
     
-            colorByHour(h, newEditableEventArea);
+            colorByHour(h, newEditableEventArea); // apply color-coding to each row
         }
     }
     
-    displayTimeblocks();
+    displayTimeblocks(); // write time blocks to screen
     
     // color time blocks according to past/present/future
     function colorByHour(hour, eventSlot){
-      let currentHour = moment().hour();
-      console.log(`Current hour is ${currentHour}`);
+      let currentHour = moment().hour(); // get current hour from Moment
       if (hour < currentHour){
-        eventSlot.setAttribute("class", "past description col-sm-10 col-7");
+        eventSlot.setAttribute("class", "past description col-sm-10 col-7"); // time block is before current hour
       } else if (hour == currentHour){
-        eventSlot.setAttribute("class", "present description col-sm-10 col-7");
+        eventSlot.setAttribute("class", "present description col-sm-10 col-7"); // time block is at current hour
       } else if (hour > currentHour){
-        eventSlot.setAttribute("class", "future description col-sm-10 col-7");
+        eventSlot.setAttribute("class", "future description col-sm-10 col-7"); // time block is after current hour
       }
     }
     
     // local storage retrieval
     function getScheduledEvents(){
-      console.log(scheduleContainer.children().length);
       for (var i = 0; i < scheduleContainer.children().length; i++){// for each hour row in container 
         var hourToExtract = scheduleContainer.children().get(i).children[0].textContent; // get hour identifier
-        console.log(`extracting hour ${hourToExtract}`);
         var entryToSet = scheduleContainer.children().get(i).children[1]; // reference the textarea to fill
-        console.log(entryToSet);
-        if (scheduleStorage.getItem(hourToExtract) != undefined){  // if $(".hour").text() == eventHour
-          console.log(scheduleStorage.getItem(hourToExtract));
+        if (scheduleStorage.getItem(hourToExtract) != undefined){  // if if an entry in local storage matches the row hour
           entryToSet.value = (scheduleStorage.getItem(hourToExtract)); // set textarea value to eventData
-          console.log(entryToSet.value);
         }
       }
     }
-    getScheduledEvents();
+    
+    getScheduledEvents(); // fill time blocks with existing entries from local storage
     
     
     //local storage saving
     function saveSchedule(){
       event.preventDefault;
       var target=  $(event.target);
-      console.log(`saving event`);
-      //console.log(target);
+      // reference the hour associated with the save button;
       let eventHour = target.siblings(".hour").text();
-      //console.log(target.siblings(".hour"));
-      console.log(eventHour);
+      // reference the scheduled event text associated with the save button
       let eventData = target.siblings("textarea").val();
-      //console.log(target.siblings("textarea"));
-      console.log(eventData);
-      var eventObject = {
-        hour: eventHour,
-        data: eventData,
-      }
-      console.log(eventObject);
+      // send this info to local storage as a Key:Value pair
       scheduleStorage.setItem(eventHour, eventData);
     }
     
-    // event creation or editing
+    //associate save buttons with save function
     let saveEventBtn = $(".saveBtn");
     saveEventBtn.click(saveSchedule);
     
@@ -110,7 +94,7 @@ $(document).ready(function(){
     /* FLOW:
     - retrieve existing entries from storage
     - create timeblocks and fill
-    - get current time and compare hout
+    - get current time and compare hour
         - if past, .past. if present, .present. if future, .future
     - allow user to edit text of new or existing events and save to storage
     */
